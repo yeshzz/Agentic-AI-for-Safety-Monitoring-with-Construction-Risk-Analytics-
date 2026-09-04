@@ -53,3 +53,46 @@ def generate_equipment_status():
             "last_inspected_days_ago": random.randint(0, 45),
         })
     return status
+
+
+# ---------------------------------------------------------------------------
+# Milestone 2: Safety Agent mock data (worker monitoring / PPE compliance)
+# ---------------------------------------------------------------------------
+
+WORKER_NAMES = [
+    "R. Kumar", "S. Patel", "A. Sharma", "M. Iyer", "V. Reddy",
+    "K. Nair", "P. Singh", "D. Rao", "N. Gupta", "T. Menon",
+    "J. Das", "L. Verma"
+]
+
+PPE_ITEMS = ["Hard Hat", "Safety Vest", "Safety Boots", "Protective Gloves", "Safety Harness"]
+
+UNSAFE_BEHAVIORS = [
+    "Working at height without harness",
+    "Standing under suspended load",
+    "Bypassing machine guard",
+    "Smoking in restricted zone",
+    "Using phone while operating equipment",
+    "Ignoring barricade/warning tape",
+]
+
+
+def generate_worker_activity_log(num_workers: int = 12):
+    """Simulates worker presence + PPE sensor / camera detections for the day."""
+    workers = []
+    for i in range(num_workers):
+        name = WORKER_NAMES[i % len(WORKER_NAMES)]
+        zone = random.choice(ZONES)
+        # Randomly decide which PPE items this worker is missing (most workers fully compliant)
+        missing_ppe = [item for item in PPE_ITEMS if random.random() < 0.12]
+        unsafe_behavior = random.choice(UNSAFE_BEHAVIORS) if random.random() < 0.15 else None
+
+        workers.append({
+            "worker_id": f"W-{200 + i}",
+            "name": name,
+            "zone": zone,
+            "missing_ppe": missing_ppe,
+            "unsafe_behavior": unsafe_behavior,
+            "hours_on_site_today": round(random.uniform(1, 9), 1),
+        })
+    return workers

@@ -16,6 +16,7 @@ from fastapi.staticfiles import StaticFiles
 import os
 
 from app.site_risk_agent import run_site_risk_agent
+from app.safety_agent import run_safety_agent
 
 app = FastAPI(title="BuildSure AI - Site Risk Monitoring (Milestone 1)")
 
@@ -37,6 +38,16 @@ def get_site_risk():
     return run_site_risk_agent()
 
 
+@app.get("/api/safety")
+def get_safety_status():
+    """
+    Milestone 2 endpoint.
+    Runs the Safety Agent and returns PPE compliance, unsafe behavior,
+    accident-prone zones, and safety recommendations.
+    """
+    return run_safety_agent()
+
+
 @app.get("/api/health")
 def health_check():
-    return {"status": "ok", "agent": "Site Risk Agent", "milestone": 1}
+    return {"status": "ok", "agents": ["Site Risk Agent", "Safety Agent"], "milestone": 2}
